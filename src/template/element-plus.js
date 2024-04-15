@@ -15,9 +15,10 @@ export function setupElementPlus() {
 export function loadStyle() {
   // https://unpkg.com/browse/ant-design-vue@2.2.4/dist/antd.min.css
   const antdStyle = new Promise((resolve, reject) => {
+    const ANT_VERSION = '#ANT_VERSION#'
     const link = document.createElement('link')
     link.rel = 'stylesheet'
-    link.href = 'https://unpkg.com/ant-design-vue@2.1.2/dist/antd.min.css'
+    link.href = `https://unpkg.com/ant-design-vue@${ANT_VERSION}/dist/antd.min.css`
     link.addEventListener('load', resolve)
     link.addEventListener('error', reject)
     document.body.append(link)
@@ -36,17 +37,13 @@ export function loadStyle() {
 }
 
 export function LoadSrtipt() {
-  // 降级处理
-  const scripts = [
-    'https://unpkg.com/ant-design-vue@2.1.2/dist/antd.min.js',
-  ].map((script) => {
-    return new Promise((resolve, reject) => {
-      const scriptElement = document.createElement('script')
-      scriptElement.src = script
-      scriptElement.addEventListener('load', resolve)
-      scriptElement.addEventListener('error', reject)
-      document.body.append(scriptElement)
-    })
+  const ANT_VERSION = '#ANT_VERSIONJS#'
+  return new Promise((resolve, reject) => {
+    const script = `https://unpkg.com/ant-design-vue@${ANT_VERSION}/dist/antd.min.js`
+    const scriptElement = document.createElement('script')
+    scriptElement.src = script
+    scriptElement.addEventListener('load', resolve)
+    scriptElement.addEventListener('error', reject)
+    document.body.append(scriptElement)
   })
-  return Promise.all(scripts)
 }

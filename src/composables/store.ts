@@ -109,10 +109,12 @@ export const useStore = (initial: Initial) => {
       try {
         const file = new File(
           ELEMENT_PLUS_FILE,
-          generateElementPlusCode(version, userOptions.value.styleSource).trim(),
+          generateElementPlusCode(
+            version,
+            userOptions.value.styleSource,
+          ).trim(),
           hideFile.value
         )
-        console.log('Element Plus file:', file)
         state.files[ELEMENT_PLUS_FILE] = file
         compileFile(store, file).then((errs) => (state.errors = errs))
       } catch (error) {
@@ -134,9 +136,12 @@ export const useStore = (initial: Initial) => {
       '/dist/index.css',
       '/theme-chalk/dark/css-vars.css'
     )
+    console.log(version)
     return elementPlusCode
       .replace('#STYLE#', style)
       .replace('#DARKSTYLE#', darkStyle)
+      .replace('#ANT_VERSION#', version)
+      .replace('#ANT_VERSIONJS#', version)
   }
 
   async function setVueVersion(version: string) {
