@@ -55,7 +55,7 @@ export const genImportMap = (
     // ant-design-vue   @4.1.2  /dist/antd.min.js
     'ant-design-vue': {
       version: elementPlus,
-      path: '/dist/antd.esm.js',
+      path: '/dist/antd-with-locales.js',
     },
     // https://cdn.jsdelivr.net/npm/ant-design-vue@2.2.4/dist/antd.min.js
     '@element-plus/icons-vue': {
