@@ -29,7 +29,7 @@ interface Version {
 
 const versions = reactive<Record<VersionKey, Version>>({
   elementPlus: {
-    text: 'Element Plus',
+    text: 'Ant design Vue',
     published: getSupportedEpVersions(nightly),
     active: store.versions.elementPlus,
   },
@@ -80,8 +80,8 @@ function refreshView() {
       />
       <div flex="~ gap-1" items-center lt-sm-hidden>
         <div text-xl>Element Plus Playground</div>
-        <el-tag size="small">v{{ appVersion }}, repl v{{ replVersion }}</el-tag>
-        <el-tag v-if="store.pr" size="small">PR {{ store.pr }}</el-tag>
+        <!-- <el-tag size="small">v{{ appVersion }}, repl v{{ replVersion }}</el-tag>
+        <el-tag v-if="store.pr" size="small">PR {{ store.pr }}</el-tag> -->
       </div>
     </div>
 
@@ -94,25 +94,25 @@ function refreshView() {
         lt-lg-hidden
       >
         <span>{{ v.text }}:</span>
-        <el-select
+        <a-select
           :model-value="v.active"
           size="small"
           fit-input-width
           w-36
-          @update:model-value="setVersion(key, $event)"
+          @change="setVersion(key, $event)"
         >
-          <el-option v-for="ver of v.published" :key="ver" :value="ver">
+          <a-select-option v-for="ver of v.published" :key="ver" :value="ver">
             {{ ver }}
-          </el-option>
-        </el-select>
+          </a-select-option>
+        </a-select>
 
-        <el-checkbox
+        <!-- <a-checkbox
           v-if="key === 'elementPlus'"
           v-model="nightly"
           @change="toggleNightly"
         >
           nightly
-        </el-checkbox>
+        </a-checkbox> -->
       </div>
 
       <div flex="~ gap-4" text-lg>
@@ -133,12 +133,12 @@ function refreshView() {
           <button title="View on GitHub" i-ri-github-fill />
         </a>
 
-        <el-popover trigger="click" width="300px">
+        <!-- <el-popover trigger="click" width="300px">
           <Settings />
           <template #reference>
             <button i-ri:settings-line hover:color-primary />
           </template>
-        </el-popover>
+        </el-popover> -->
       </div>
     </div>
   </nav>

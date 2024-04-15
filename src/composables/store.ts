@@ -35,11 +35,11 @@ export const TSCONFIG = 'tsconfig.json'
 export const useStore = (initial: Initial) => {
   const versions = reactive(
     initial.versions ||
-      ({
-        vue: 'latest',
-        elementPlus: 'latest',
-        typescript: 'latest',
-      } satisfies Versions)
+    ({
+      vue: 'latest',
+      elementPlus: 'latest',
+      typescript: 'latest',
+    } satisfies Versions)
   )
 
   const compiler = shallowRef<typeof import('vue/compiler-sfc')>()
@@ -68,7 +68,7 @@ export const useStore = (initial: Initial) => {
   })
 
   const bultinImportMap = computed<ImportMap>(() =>
-    genImportMap(versions, nightly.value)
+    genImportMap(versions)
   )
   const userImportMap = computed<ImportMap>(() => {
     const code = state.files[IMPORT_MAP]?.code.trim()
@@ -106,25 +106,30 @@ export const useStore = (initial: Initial) => {
   watch(
     () => versions.elementPlus,
     (version) => {
-      const file = new File(
-        ELEMENT_PLUS_FILE,
-        generateElementPlusCode(version, userOptions.value.styleSource).trim(),
-        hideFile.value
-      )
-      state.files[ELEMENT_PLUS_FILE] = file
-      compileFile(store, file).then((errs) => (state.errors = errs))
+      try {
+        const file = new File(
+          ELEMENT_PLUS_FILE,
+          generateElementPlusCode(version, userOptions.value.styleSource).trim(),
+          hideFile.value
+        )
+        console.log('Element Plus file:', file)
+        state.files[ELEMENT_PLUS_FILE] = file
+        compileFile(store, file).then((errs) => (state.errors = errs))
+      } catch (error) {
+        console.error(error)
+      }
     },
     { immediate: true }
   )
 
   function generateElementPlusCode(version: string, styleSource?: string) {
     const style = styleSource
-      ? styleSource.replace('#VERSION#', version)
+      ? styleSource.replace('#VERSION#', 'latest')
       : genCdnLink(
-          nightly.value ? '@element-plus/nightly' : 'element-plus',
-          version,
-          '/dist/index.css'
-        )
+        'element-plus',
+        "latest",
+        '/dist/index.css'
+      )
     const darkStyle = style.replace(
       '/dist/index.css',
       '/theme-chalk/dark/css-vars.css'

@@ -19,14 +19,7 @@ export const genCdnLink = (
   path: string
 ) => {
   version = version ? `@${version}` : ''
-  switch (cdn.value) {
-    case 'jsdelivr':
-      return `https://cdn.jsdelivr.net/npm/${pkg}${version}${path}`
-    case 'jsdelivr-fastly':
-      return `https://fastly.jsdelivr.net/npm/${pkg}${version}${path}`
-    case 'unpkg':
-      return `https://unpkg.com/${pkg}${version}${path}`
-  }
+  return `https://unpkg.com/${pkg}${version}${path}`
 }
 
 export const genVueLink = (version: string) => {
@@ -48,7 +41,6 @@ export const genVueLink = (version: string) => {
 
 export const genImportMap = (
   { vue, elementPlus }: Partial<Versions> = {},
-  nightly: boolean
 ): ImportMap => {
   const deps: Record<string, Dependency> = {
     vue: {
@@ -60,16 +52,12 @@ export const genImportMap = (
       version: vue,
       path: '/dist/shared.esm-bundler.js',
     },
-    'element-plus': {
-      pkg: nightly ? '@element-plus/nightly' : 'element-plus',
+    // ant-design-vue   @4.1.2  /dist/antd.min.js
+    'ant-design-vue': {
       version: elementPlus,
-      path: '/dist/index.full.min.mjs',
+      path: '/dist/antd.esm.js',
     },
-    'element-plus/': {
-      pkg: 'element-plus',
-      version: elementPlus,
-      path: '/',
-    },
+    // https://cdn.jsdelivr.net/npm/ant-design-vue@2.2.4/dist/antd.min.js
     '@element-plus/icons-vue': {
       version: '2',
       path: '/dist/index.min.js',
@@ -114,9 +102,7 @@ export const getSupportedTSVersions = () => {
 }
 
 export const getSupportedEpVersions = (nightly: MaybeRef<boolean>) => {
-  const pkg = computed(() =>
-    unref(nightly) ? '@element-plus/nightly' : 'element-plus'
-  )
+  const pkg = computed(() => 'ant-design-vue')
   const versions = getVersions(pkg)
   return computed(() => {
     if (unref(nightly)) return versions.value
