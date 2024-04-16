@@ -16,6 +16,10 @@ export function loadStyle() {
   // https://unpkg.com/browse/ant-design-vue@2.2.4/dist/antd.min.css
   const antdStyle = new Promise((resolve, reject) => {
     const ANT_VERSION = '#ANT_VERSION#'
+    if (ANT_VERSION.startsWith('4.')) {
+      resolve()
+      return
+    }
     const link = document.createElement('link')
     link.rel = 'stylesheet'
     link.href = `https://unpkg.com/ant-design-vue@${ANT_VERSION}/dist/antd.min.css`
